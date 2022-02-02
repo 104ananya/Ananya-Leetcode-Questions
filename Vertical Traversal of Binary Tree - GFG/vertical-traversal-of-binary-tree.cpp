@@ -97,39 +97,47 @@ void printInorder(Node* root)
 
 
  // } Driver Code Ends
+
 class Solution
 {
-    public:
-    //Function to find the vertical order traversal of Binary Tree.
-    void preorder(Node* root,int vert,int level,map<int,map<int,vector<int>>> &mp){
-        if(root==NULL){
-            return;
-        }
-        
-        mp[vert][level].push_back(root->data);
-        preorder(root->left,vert-1,level+1,mp);
-        preorder(root->right,vert+1,level+1,mp);
-    }
-    
+public:
+    // Function to find the vertical order traversal of Binary Tree.
     vector<int> verticalOrder(Node *root)
     {
-        //Your code here
-        map<int,map<int,vector<int>>> mp;
-        preorder(root,0,0,mp);
+        // Your code here
         vector<int> ans;
-        
-        for(auto i:mp){
-            
-            for(auto j:i.second){
-                for(auto q:j.second){
-                    ans.push_back(q);
-                }
+        map<int, map<int, vector<int>>> mpp;
+
+        queue<pair<Node*, pair<int, int>>> q;
+        q.push({root, {0, 0}});
+
+        while(!q.empty()){
+            auto it = q.front();
+            q.pop();
+
+            Node* temp = it.first;
+            int verti = it.second.first;
+            int level = it.second.second;
+
+            mpp[verti][level].push_back(temp->data);
+
+            if(temp->left){
+                q.push({temp->left,{(verti - 1), (level + 1)}});
+            }
+            if(temp->right){
+                q.push({temp->right,{(verti + 1),(level + 1)}});
             }
         }
+
+        for(auto it : mpp){
+            for(auto itr1 : it.second){
+                ans.insert(ans.end(),itr1.second.begin(), itr1.second.end());
+            }
+        }
+
         return ans;
     }
 };
-
 
 
 // { Driver Code Starts.
