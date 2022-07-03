@@ -1,12 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
-/*
- * @lc app=leetcode id=225 lang=cpp
- *
- * [225] Implement Stack using Queues
- */
-
-// @lc code=start
 class MyStack
 {
 
@@ -15,35 +6,35 @@ public:
     {
     }
 
-    queue<int> q1, q2;
-    
+    queue<int> q;
+
     void push(int x)
     {
-        q2.push(x);
-        while (!q1.empty())
-        {
-            q2.push(q1.front());
-            q1.pop();
-        }
+        q.push(x);
+        int size = q.size();
 
-        swap(q1, q2);
+        for (int i = 0; i < size - 1; i++)
+        {
+            q.push(q.front());
+            q.pop();
+        }
     }
 
     int pop()
     {
-        int ans = q1.front();
-        q1.pop();
+        int ans = q.front();
+        q.pop();
         return ans;
     }
 
     int top()
     {
-        return q1.front();
+        return q.front();
     }
 
     bool empty()
     {
-        return q1.empty();
+        return q.empty();
     }
 };
 
@@ -55,4 +46,3 @@ public:
  * int param_3 = obj->top();
  * bool param_4 = obj->empty();
  */
-// @lc code=end
